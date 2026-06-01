@@ -1,0 +1,16 @@
+package main
+
+
+
+func Compact(ptr *[]string) int {//delete element with zero value in slice
+	s := *ptr
+	trackIndex := 0//keeps track of where the next non-empty string should be placed.
+	for readindex := 0; readindex < len(s); readindex++ {
+		if s[readindex] != "" {
+			s[trackIndex] = s[readindex]
+			trackIndex++
+		}
+	}
+	*ptr = s[:trackIndex]//resizes the slice to contain only the non-empty strings
+	return trackIndex
+}
