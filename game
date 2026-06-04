@@ -1,0 +1,69 @@
+package main
+
+import "fmt"
+//Party management system
+
+type Item struct {
+	Name  string
+	Value int
+}
+type Stats struct {
+	Health int
+	Mana   int
+}
+type Character struct {
+	Name  string
+	Class string
+	Stats
+	Inventory []Item
+}
+type Party struct {
+	Characters []Character
+}
+
+func (p *Party) TotalValue() int {
+	total := 0
+	for _, wes := range p.Characters {
+		for _, rew := range wes.Inventory {
+			total += rew.Value
+		}
+	}
+	return total
+
+}
+
+func (f *Character) Heal(amount int) {
+	f.Health += amount
+}
+
+func main() {
+	part := Party{
+		Characters: []Character{
+			{   
+				Name: "Red",
+				Class: "Warrior",
+				Stats: Stats{Health: 200, Mana: 40},
+				Inventory: []Item{
+					{Name: "Iron Sword", Value: 300},
+					{Name: "Shield", Value: 50},
+					{Name: "Arrow", Value: 100},
+				},
+			},
+
+			{
+				Name:  "Sage",
+				Class: "Mage",
+				Stats: Stats{Health: 77, Mana: 300},
+				Inventory: []Item{
+					{Name: "magic Staff", Value: 500},
+					{Name: "Mana Potion", Value: 45},
+				},
+			},
+		},
+	}
+	fmt.Printf("Total Party Inventory Value: %d gold\n", part.TotalValue())
+	fmt.Printf("Red's Health before healing: %d\n", part.Characters[0].Health)
+	part.Characters[0].Heal(25)
+	fmt.Printf("Red's Health after healing: %d\n", part.Characters[0].Health)
+
+}
