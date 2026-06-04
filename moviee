@@ -1,0 +1,21 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Movie struct {
+	Title string `json:"title"`
+	ReleaseYear int `json:"release_year"`
+	IsAvailable bool `json:"is_available"`
+}
+
+func main() {
+	movie := Movie{Title: "Decepyion", ReleaseYear: 2015, IsAvailable: true}
+	jsonData, err := json.Marshal(movie)
+	if err != nil  {
+		fmt.Println("Error:",err )
+	}
+	fmt.Println(string(jsonData))
+}
