@@ -1,0 +1,161 @@
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func Duplicate(s []string) bool {// takes a slice of string and returns only the strings 
+	//that appeared more than once
+	//result := []string{}
+	seenLetters := make(map[string]bool)
+	for _, word := range s {
+		if len(word) == 0 {
+			continue
+		}
+		firstLetter := string(word[0])
+		if seenLetters[firstLetter] {
+			return false
+		}
+		seenLetters[firstLetter] = true
+
+	}
+	return true
+}
+func Both(words, strs []string) []string {
+	inFirstList := make(map[string]bool)
+	var result []string
+	for _, word := range words {
+		inFirstList[word] = true
+	}
+	for _, str := range strs {
+		if inFirstList[str] == true {
+			result = append(result, str)
+		}
+	}
+	return result
+}
+func SetDifference(ref, fer []string) []string {
+	var result []string
+	NotSeen := make(map[string]bool)
+	for _, word := range ref {
+		NotSeen[word] = true
+	}
+	for _, den := range fer {
+		if NotSeen[den] == false {
+			result = append(result, den)
+		}
+	}
+	return result
+}
+func Dup(str []string) []string {
+	seen := make(map[string]bool)
+	NotSeen := make(map[string]bool)
+	var result []string
+	for _, word := range str {
+		if seen[word] {
+			if !NotSeen[word] {
+				NotSeen[word] = true
+				result = append(result, word)
+			}
+		} else {
+			seen[word] = true
+		}
+	}
+	return result
+}
+func firstLetter(str []string) map[string][]string {// takes a slice of string and
+	//arrange based on first letter of a string
+	output := make(map[string][]string)
+	for _, word := range str {
+		if word == "" {
+			continue
+		}
+		first := string(word[0])
+		output[first] = append(output[first], word)
+	}
+	return output
+
+}
+func Invert(str map[int]string) map[string][]int {//returns a map that user ID to their roles, it swaps the map inputted
+	output := make(map[string][]int)
+	for key, value := range str {
+		output[value] = append(output[value], key)
+	}
+	return output
+}
+
+type Custom struct {
+	Words string
+	Count int
+}
+
+//	type West struct {
+//		Ash []Custom
+//	}
+func Count(input []string) []string {// counta the number of times words appear in a text filtering stop words
+	hold := make(map[string]int)
+	var item []Custom
+	var final []string
+	stopWord := map[string]bool{"the": true, "is": true, "and": true, "a": true}
+	for _, word := range input {
+		_, exist := stopWord[word]
+		if exist == true {
+			continue
+		} else {
+			hold[word]++
+		}
+	}
+	for words, count := range hold {
+		newStruct := Custom{Words: words, Count: count}
+		item = append(item, newStruct)
+	}
+	sort.Slice(item, func(i, j int) bool {
+		return item[i].Count > item[j].Count
+	})
+	for i := 0; i < len(item) && i < 2; i++ {
+		final = append(final, item[i].Words)
+
+	}
+	return final
+
+}
+
+type User struct {
+	Name    string
+	Country string
+}
+
+func Group(user []User) map[string][]string {// group user according to country
+	//var User []string
+	update := make(map[string][]string)
+	for _, value := range user {
+		update[value.Country] = append(update[value.Country], value.Name)
+	}
+	return update
+
+}
+func CompareStock(current, target map[string]int) map[string]int {// compares the current stock against a target stock to know when an item is out of stock
+	result := make(map[string]int)
+	//seen := make(map[string]bool)
+	for key,value := range target {
+		currentStock := current[key]
+		if currentStock < target[key] {
+			result[key] = value - currentStock
+		}
+		
+	}
+	return result
+}
+
+func main() {
+	fmt.Println(Duplicate([]string{"Alice", "Bob", "Charles"}))
+	fmt.Println(Duplicate([]string{"Alice", "Bob", "Adore"}))
+	fmt.Println(SetDifference([]string{"apple", "banana", "cherry"}, []string{"banana", "date", "apple"}))
+	fmt.Println(Invert(map[int]string{101: "admin", 102: "editor", 103: "admin", 104: "viewer"}))
+	fmt.Println(Group([]User{
+		{Name: "Alice", Country: "Nigeria"},
+		{Name: "Bob", Country: "USA"},
+		{Name: "Charlie", Country: "Nigeria"},
+	}))
+}
