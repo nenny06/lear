@@ -1,0 +1,28 @@
+package main
+import "fmt"
+
+func nested(str [][]string) map[string]map[string]bool {
+	output := make(map[string]map[string]bool)
+	for _, pair := range str {
+		origin := pair[0]
+		destination := pair[1]
+		if output[origin] == nil{
+			output[origin] = make(map[string]bool)
+
+		}
+		output[origin][destination] = true
+	}
+	return output 
+}
+
+
+func main() {
+	routes := [][]string{
+		{"Lagos", "Abuja"},
+		{"Lagos", "Kano"},
+		{"Abuja", "Kano"},
+	}
+
+	result := nested(routes)
+	fmt.Printf("%#v\n", result)
+}
